@@ -10,8 +10,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 0) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_23_123153) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "halls", force: :cascade do |t|
+    t.string "name"
+    t.jsonb "scheme", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "movies", force: :cascade do |t|
+    t.string "title"
+    t.string "description"
+    t.string "genre", default: [], array: true
+    t.integer "duration"
+    t.string "directors", default: [], array: true
+    t.string "actors", default: [], array: true
+    t.string "countries", default: [], array: true
+    t.date "release_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "sessions", force: :cascade do |t|
+    t.bigint "movie_id"
+    t.bigint "hall_id"
+    t.datetime "start_datetime"
+    t.jsonb "seats_data", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hall_id"], name: "index_sessions_on_hall_id"
+    t.index ["movie_id"], name: "index_sessions_on_movie_id"
+  end
 
 end
