@@ -1,0 +1,15 @@
+<div class="form-switch check_boxes optional user_permissions">
+  <label class="col-sm-3 col-form-label pt-0 check_boxes optional">Permissions</label>
+  <div class="col-sm-9">
+    <% User::PERMISSION_LEVELS.each do |x| %>
+      <div class="form-check">
+        <label>
+          <input class="form-check-input check_boxes optional" role="switch" type="checkbox"
+                 value="<%= x %>" name="user[permissions][]" id="<%= "user_permissions_#{x}" %>"
+                 <%= 'checked' if local_assigns.has_key?(:user) && user.permissions.include?(x) %>>
+          <%= t("users.permissions.#{x}") %>
+        </label>
+      </div>
+    <% end %>
+  </div>
+</div>

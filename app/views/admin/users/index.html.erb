@@ -1,0 +1,36 @@
+<% content_for(:active_tab) { 'staff' } %>
+<div class="row">
+  <div class="col"><h2 class="fs-3">Staff</h2></div>
+  <div class="col-2">
+    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="<%= "#addModal" %>">
+      <%= t('admin.users.actions.add') %>
+    </button>
+    <%= render 'add_modal' %>
+  </div>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Role</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.email %></td>
+        <td><%= user.role %></td>
+        <td>
+          <% if user.admin? %>
+            <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="<%= "#permissionsModal#{user.id}" %>">
+              Permissions
+            </button>
+            <%= render 'permissions_modal', user: user %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

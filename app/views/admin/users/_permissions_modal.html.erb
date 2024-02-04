@@ -1,0 +1,21 @@
+<div class="modal fade" id="<%= "permissionsModal#{user.id}" %>" tabindex="-1"
+     aria-labelledby="<%= "permissionsModal#{user.id}Label" %>" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title fs-5" id="<%= "permissionsModal#{user.id}Label" %>">Permissions for <%= user.email %></h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <%= simple_form_for user, url: admin_user_path(user)  do |f| %>
+        <div class="modal-body">
+          <%= render 'permissions_list', user: user %>
+        </div>
+        <div class="modal-footer">
+          <%= f.button :submit, t('admin.users.actions.downgrade'), class: 'btn-link',
+                       data: { turbo_confirm: t('admin.users.actions.downgrade_confirmation', email: user.email) } %>
+          <%= f.button :submit, t('admin.users.actions.update'), class: 'btn-dark' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

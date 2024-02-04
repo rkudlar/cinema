@@ -1,0 +1,21 @@
+<div class="modal fade" id="<%= "addModal" %>" tabindex="-1"
+     aria-labelledby="<%= "addModalLabel" %>" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title fs-5" id="addModalLabel">New teammate</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <%= simple_form_for :user, url: add_admin_users_path do |f| %>
+        <div class="modal-body">
+          <%= f.input :email, wrapper: :horizontal_form, value: nil  %>
+          <%= f.hidden_field :role, value: :admin %>
+          <%= render 'permissions_list' %>
+        </div>
+        <div class="modal-footer">
+          <%= f.button :submit, t('admin.users.actions.add'), class: 'btn-dark' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
