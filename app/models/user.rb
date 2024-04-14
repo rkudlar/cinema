@@ -1,8 +1,10 @@
 class User < ApplicationRecord
   PERMISSION_LEVELS = %w(
+    create_movie_with_tmdb
+    create_and_update_movie
+    remove_movie
     manage_halls
     manage_sessions
-    manage_movies
     ticket_sales
   )
   # Include default devise modules. Others available are:
