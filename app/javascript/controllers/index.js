@@ -4,5 +4,8 @@
 
 import { application } from "./application"
 
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
+import ArrayInputController from "./array_input_controller"
+application.register("array-input", ArrayInputController)
+
+import MovieTabsController from "./movie_tabs_controller"
+application.register("movie-tabs", MovieTabsController)

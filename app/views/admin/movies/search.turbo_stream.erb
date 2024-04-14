@@ -1,0 +1,9 @@
+<%= turbo_stream.replace 'search_list' do %>
+  <div id="search_list">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3">
+      <% @search_list.each do |movie| %>
+        <%= render 'card', movie: movie %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

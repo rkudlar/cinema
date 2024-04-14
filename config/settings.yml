@@ -1,0 +1,6 @@
+tmdb:
+  api_key: <%= ENV['TMDB_API_KEY'] %>
+  api_read_access_token: <%= ENV['TMDB_API_READ_ACCESS_TOKEN'] %>
+  url: https://api.themoviedb.org
+  img_url: https://image.tmdb.org
+  img_path: /t/p/w440_and_h660_face

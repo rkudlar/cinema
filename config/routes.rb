@@ -10,6 +10,10 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   namespace :admin do
+    resources :movies do
+      post :search, on: :collection
+      post 'create_with_tmdb/:external_id', on: :collection, as: :create_with_tmdb, action: :create_with_tmdb
+    end
     resources :users, only: %i[index update], path: :staff do
       post 'add', on: :collection
     end

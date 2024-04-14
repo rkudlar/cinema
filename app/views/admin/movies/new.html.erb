@@ -1,0 +1,84 @@
+<h2 class="fs-3 my-4">Admin Movie Panel</h2>
+
+<ul data-controller="movie-tabs" class="nav nav-tabs mb-4" id="movieTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link <%= 'active' if cookies[:active_movie_tab].blank? || cookies[:active_movie_tab] == 'Add Manually' %>"
+            id="new-movie-tab"
+            data-action="click->movie-tabs#setLastActiveTab"
+            data-bs-toggle="tab" data-bs-target="#new-movie-tab-pane"
+            type="button" role="tab"
+            aria-controls="new-movie-tab-pane" aria-selected="true">
+      Add Manually
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link <%= 'active' if cookies[:active_movie_tab] == 'Now Playing' %>"
+            id="now-playing-tab"
+            data-action="click->movie-tabs#setLastActiveTab"
+            data-bs-toggle="tab" data-bs-target="#now-playing-tab-pane"
+            type="button" role="tab"
+            aria-controls="now-playing-tab-pane" aria-selected="false">
+      Now Playing
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link <%= 'active' if cookies[:active_movie_tab] == 'Upcoming' %>"
+            id="upcoming-tab"
+            data-action="click->movie-tabs#setLastActiveTab"
+            data-bs-toggle="tab" data-bs-target="#upcoming-tab-pane"
+            type="button" role="tab"
+            aria-controls="upcoming-tab-pane" aria-selected="false">
+      Upcoming
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link <%= 'active' if cookies[:active_movie_tab] == 'Search' %>"
+            id="search-tab"
+            data-action="click->movie-tabs#setLastActiveTab"
+            data-bs-toggle="tab" data-bs-target="#search-tab-pane"
+            type="button" role="tab"
+            aria-controls="search-tab-pane" aria-selected="false">
+      Search
+    </button>
+  </li>
+</ul>
+<div class="tab-content" id="movieTabContent">
+  <div class="tab-pane fade <%= 'show active' if cookies[:active_movie_tab].blank? || cookies[:active_movie_tab] == 'Add Manually' %>"
+       id="new-movie-tab-pane" role="tabpanel" aria-labelledby="new-movie-tab" tabindex="0">
+    <%= render 'form' %>
+  </div>
+  <div class="tab-pane fade <%= 'show active' if cookies[:active_movie_tab] == 'Now Playing' %>"
+       id="now-playing-tab-pane" role="tabpanel" aria-labelledby="now-playing-tab" tabindex="0">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3">
+      <% @now_playing_list.each do |movie| %>
+        <%= render 'card', movie: movie %>
+      <% end %>
+    </div>
+  </div>
+  <div class="tab-pane fade <%= 'show active' if cookies[:active_movie_tab] == 'Upcoming' %>"
+       id="upcoming-tab-pane" role="tabpanel" aria-labelledby="upcoming-tab" tabindex="0">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3">
+      <% @upcoming_list.each do |movie| %>
+        <%= render 'card', movie: movie %>
+      <% end %>
+    </div>
+  </div>
+  <div class="tab-pane fade <%= 'show active' if cookies[:active_movie_tab] == 'Search' %>"
+       id="search-tab-pane" role="tabpanel" aria-labelledby="search-tab" tabindex="0">
+    <%= form_with url: search_admin_movies_path do |f| %>
+      <div class="row d-flex justify-content-center">
+        <div class="col-6">
+          <div class="input-group mb-3">
+            <%= f.text_field :query, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="col-2">
+          <%= f.submit 'Search', class: 'btn btn-dark' %>
+        </div>
+      </div>
+    <% end %>
+    <div id="search_list">
+
+    </div>
+  </div>
+</div>

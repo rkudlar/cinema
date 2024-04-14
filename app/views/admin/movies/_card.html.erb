@@ -1,0 +1,36 @@
+<div class="col">
+  <div class="card shadow-sm">
+    <% if movie['poster_path'].present? %>
+      <img src="<%= "#{Settings.tmdb.img_url}#{Settings.tmdb.img_path}#{movie['poster_path']}" %>" class="card-img-top">
+    <% elsif movie.is_a?(Movie) && movie.poster.present? %>
+      <%= image_tag url_for(movie.poster), class: 'card-img-top' %>
+    <% else %>
+      <div class="no-image card-img-top">
+        <span>No image</span>
+      </div>
+    <% end %>
+    <div class="card-body fixed-card-body">
+      <h5 class="card-title"><%= movie['title'] %></h5>
+      <% if movie['release_date'].present? %>
+        <% if movie['release_date'].is_a?(Date) %>
+          <time><%= movie['release_date'].strftime("%b %d, %Y") %></time>
+        <% else %>
+          <time><%= DateTime.parse(movie['release_date']).strftime("%b %d, %Y") %></time>
+        <% end %>
+      <% else %>
+        <span>No data</span>
+      <% end %>
+      <p class="card-text text-clamp-4"><%= movie['overview'] || movie.description %></p>
+    </div>
+    <div class="card-footer border-0 bg-white text-end">
+      <% target_movie = movie.is_a?(Movie) ? movie : @movies.find { |x| x.external_id == movie['id'] } %>
+      <% if target_movie %>
+        <%= link_to 'Edit', edit_admin_movie_path(target_movie), class: 'btn btn-outline-dark' %>
+        <%= link_to 'Remove', admin_movie_path(target_movie), class: 'btn btn-outline-dark',
+                    data: { turbo_method: :delete, turbo_confirm: 'Are you sure? All sessions with this movie will also be deleted' } %>
+      <% else %>
+        <%= button_to 'Add to our collection', create_with_tmdb_admin_movies_path(movie['id']), class: 'btn btn-dark' %>
+      <% end %>
+    </div>
+  </div>
+</div>

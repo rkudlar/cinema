@@ -34,6 +34,12 @@ class ApplicationPolicy
     false
   end
 
+  User::PERMISSION_LEVELS.each do |x|
+    define_method :"permission_#{x}?" do
+      @user.superadmin? || @user.permissions.include?(x)
+    end
+  end
+
   class Scope
     def initialize(user, scope)
       @user = user
