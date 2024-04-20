@@ -1,0 +1,27 @@
+<div class="mt-3" id="<%= "seating_chart#{hall['id']}" %>">
+  <% if !hall['scheme']['rows_count'].to_i.zero? && !hall['scheme']['columns_count'].to_i.zero? %>
+    <div class="row">
+      <div class="col-sm-3">
+        <label>Seats:</label>
+      </div>
+      <div class="col-sm-9 d-flex">
+        <div class="border rounded-1 scroll-menu p-1">
+          <% hall['scheme']['seats'].values.each.with_index(1) do |row, row_index| %>
+            <ul class="d-flex showcase m-0 p-0">
+              <% row.each.with_index do |seat, i| %>
+                <li>
+                  <div class="seat <%= 'space' unless seat %>"
+                       data-row="<%= row_index %>"
+                       data-column="<%= i %>"
+                       data-action="click->seats#changeSeat">
+                  </div>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+          <%= hidden_field_tag 'hall[scheme][seats]', hall['scheme']['seats'].to_json, data: { seats_target: 'seatsScheme' } %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

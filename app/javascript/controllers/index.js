@@ -9,3 +9,6 @@ application.register("array-input", ArrayInputController)
 
 import MovieTabsController from "./movie_tabs_controller"
 application.register("movie-tabs", MovieTabsController)
+
+import SeatsController from "./seats_controller";
+application.register("seats", SeatsController)

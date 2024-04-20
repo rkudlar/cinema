@@ -12,3 +12,6 @@ en:
         update: 'Update Permissions'
         downgrade: 'Downgrade to user'
         downgrade_confirmation: "Are you sure you want to remove admin rights for %{email}?"
+    halls:
+      actions:
+        create: 'Create new hall'

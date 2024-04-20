@@ -10,7 +10,7 @@
       </div>
     <% end %>
     <div class="card-body fixed-card-body">
-      <h5 class="card-title"><%= movie['title'] %></h5>
+      <h5 class="card-title text-clamp text-clamp-1"><%= movie['title'] %></h5>
       <% if movie['release_date'].present? %>
         <% if movie['release_date'].is_a?(Date) %>
           <time><%= movie['release_date'].strftime("%b %d, %Y") %></time>
@@ -20,14 +20,16 @@
       <% else %>
         <span>No data</span>
       <% end %>
-      <p class="card-text text-clamp-4"><%= movie['overview'] || movie.description %></p>
+      <p class="card-text text-clamp text-clamp-4"><%= movie['overview'] || movie.description %></p>
     </div>
     <div class="card-footer border-0 bg-white text-end">
       <% target_movie = movie.is_a?(Movie) ? movie : @movies.find { |x| x.external_id == movie['id'] } %>
       <% if target_movie %>
-        <%= link_to 'Edit', edit_admin_movie_path(target_movie), class: 'btn btn-outline-dark' %>
-        <%= link_to 'Remove', admin_movie_path(target_movie), class: 'btn btn-outline-dark',
-                    data: { turbo_method: :delete, turbo_confirm: 'Are you sure? All sessions with this movie will also be deleted' } %>
+        <%= link_to 'Edit', edit_admin_movie_path(target_movie), class: 'btn btn-outline-dark' if policy(:movie).edit? %>
+        <% if policy(:movie).destroy? %>
+          <%= link_to 'Remove', admin_movie_path(target_movie), class: 'btn btn-outline-dark',
+                      data: { turbo_method: :delete, turbo_confirm: 'Are you sure? All sessions with this movie will also be deleted' } %>
+        <% end %>
       <% else %>
         <%= button_to 'Add to our collection', create_with_tmdb_admin_movies_path(movie['id']), class: 'btn btn-dark' %>
       <% end %>

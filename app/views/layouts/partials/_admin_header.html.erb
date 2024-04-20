@@ -6,15 +6,24 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle <%= 'active' if content_for(:active_tab) == 'movies' %>"
-             href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Movies
-          </a>
-          <ul class="dropdown-menu">
-            <li><%= link_to 'Our movies', admin_movies_path, class: 'dropdown-item' %></li>
-            <li><%= link_to 'Add new one', new_admin_movie_path, class: 'dropdown-item' %></li>
-          </ul>
+        <% if policy(:movie).new? %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle <%= 'active' if content_for(:active_tab) == 'movies' %>"
+               href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Movies
+            </a>
+              <ul class="dropdown-menu">
+                <li><%= link_to 'Our movies', admin_movies_path, class: 'dropdown-item' %></li>
+                <li><%= link_to 'Add new one', new_admin_movie_path, class: 'dropdown-item' %></li>
+              </ul>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to 'Movies', admin_movies_path, class: "nav-link #{'active' if content_for(:active_tab) == 'movies'}" %>
+          </li>
+        <% end %>
+        <li class="nav-item">
+          <%= link_to 'Halls', admin_halls_path, class: "nav-link #{'active' if content_for(:active_tab) == 'halls'}" %>
         </li>
         <% if current_user.superadmin? %>
           <li class="nav-item">

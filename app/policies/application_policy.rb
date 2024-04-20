@@ -40,6 +40,10 @@ class ApplicationPolicy
     end
   end
 
+  def admin?
+    @user.admin? || @user.superadmin?
+  end
+
   class Scope
     def initialize(user, scope)
       @user = user

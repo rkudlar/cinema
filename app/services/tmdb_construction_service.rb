@@ -26,7 +26,7 @@ class TmdbConstructionService < ApplicationService
     attributes = TmdbApiService.call(action: :credits, movie_id: @external_id)
     {
       directors: attributes['crew'].filter_map { |crew| crew['name'] if crew['job'] == 'Director' },
-      actors: attributes['cast'].map{ |actor| actor['name'] }
+      actors: attributes['cast'].map { |actor| actor['name'] }
     }
   end
 end

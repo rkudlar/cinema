@@ -16,7 +16,7 @@ class Movie < ApplicationRecord
   private
 
   def remove_empty_value
-    changes.keys.each { |k| send(k).reject!(&:blank?) if send(k).is_a?(Array) }
+    changes.each_key { |k| send(k).reject!(&:blank?) if send(k).is_a?(Array) }
   end
 
   def attach_poster
