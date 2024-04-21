@@ -1,14 +1,14 @@
 class MoviePolicy < ApplicationPolicy
   def index?
-    allowed?
+    admin?
   end
 
   def new?
-    allowed?
+    create?
   end
 
   def edit?
-    permission_create_and_update_movie?
+    update?
   end
 
   def create?
@@ -24,16 +24,10 @@ class MoviePolicy < ApplicationPolicy
   end
 
   def search?
-    allowed?
+    create?
   end
 
   def destroy?
     permission_remove_movie?
-  end
-
-  private
-
-  def allowed?
-    @user.admin? || @user.superadmin?
   end
 end

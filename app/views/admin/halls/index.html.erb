@@ -1,0 +1,39 @@
+<% content_for(:active_tab) { 'halls' } %>
+
+<div class="row">
+  <div class="col"><h2 class="fs-3">Halls</h2></div>
+  <% if policy(:hall).create? %>
+    <div class="col-2">
+      <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="<%= "#newHallModal" %>">
+        <%= t('admin.halls.actions.create') %>
+      </button>
+      <%= render 'modal_form', id: 'newHall', title: 'New hall', hall: @hall %>
+    </div>
+  <% end %>
+</div>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">Name</th>
+    <% if policy(:hall).update? || policy(:hall).destroy? %>
+      <th scope="col">Actions</th>
+    <% end %>
+  </tr>
+  </thead>
+  <tbody class="table-group-divider">
+  <% @halls.each do |hall| %>
+    <tr>
+      <td><%= hall.name %></td>
+      <td>
+        <%= link_to 'Edit', '#', data: { bs_toggle: 'modal', bs_target: "#editHall_#{hall.id}Modal" } if policy(:hall).update? %>
+        <%= link_to 'Destroy', admin_hall_path(hall), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } if policy(:hall).destroy? %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<% @halls.each do |hall| %>
+  <%= render 'modal_form', id: "editHall_#{hall.id}", title: "Edit #{hall.name} hall", hall: hall %>
+<% end %>

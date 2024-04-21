@@ -22,8 +22,8 @@ class TmdbApiService < ApplicationService
     http.use_ssl = true
 
     request = Net::HTTP::Get.new(url)
-    request["accept"] = 'application/json'
-    request["Authorization"] = "Bearer #{Settings.tmdb.api_read_access_token}"
+    request['accept'] = 'application/json'
+    request['Authorization'] = "Bearer #{Settings.tmdb.api_read_access_token}"
 
     http.request(request)
   end

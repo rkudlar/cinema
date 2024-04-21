@@ -1,0 +1,32 @@
+<div class="modal fade" id="<%= "#{id}Modal" %>" tabindex="-1"
+     aria-labelledby="<%= "#{id}ModalLabel" %>" aria-hidden="true">
+  <div class="modal-dialog" style="max-width: 50%;">
+    <div class="modal-content" data-controller="seats">
+      <div class="modal-header">
+        <h3 class="modal-title fs-5"><%= title %></h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <%= simple_form_for hall, url: hall.new_record? ? admin_halls_path : admin_hall_path(hall.id) do |f| %>
+        <div class="modal-body">
+          <%= f.input :name, wrapper: :horizontal_form, value: nil %>
+          <div class="row">
+            <div class="col-sm-3 col-form-label">Size <abbr title="required">*</abbr></div>
+            <div class="col-sm-9">
+              <div class="input-group w-25">
+                <%= text_field_tag 'hall[scheme][rows_count]', f.object&.scheme['rows_count'],
+                                   { data: { action: 'input->seats#buildSeats', seats_target: 'rowsCount' }, class: 'form-control' } %>
+                <%= text_field_tag 'hall[scheme][columns_count]', f.object&.scheme['columns_count'],
+                                   { data: { action: 'input->seats#buildSeats', seats_target: 'columnsCount' }, class: 'form-control' } %>
+              </div>
+            </div>
+          </div>
+          <%= hidden_field_tag 'ident_for_js', hall.id, data: { seats_target: 'hallId' } %>
+          <%= render 'seating_chart', hall: hall %>
+        </div>
+        <div class="modal-footer">
+          <%= f.button :submit, class: 'btn-dark' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
