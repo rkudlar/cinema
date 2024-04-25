@@ -15,3 +15,6 @@ en:
     halls:
       actions:
         create: 'Create new hall'
+    sessions:
+      actions:
+        create: 'Add new session'

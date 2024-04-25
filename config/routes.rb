@@ -22,5 +22,7 @@ Rails.application.routes.draw do
     resources :halls, except: %i[show new] do
       post :build_chart, on: :collection
     end
+
+    resources :sessions, except: %i[show new]
   end
 end

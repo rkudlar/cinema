@@ -12,3 +12,6 @@ application.register("movie-tabs", MovieTabsController)
 
 import SeatsController from "./seats_controller";
 application.register("seats", SeatsController)
+
+import ConditionalFieldsController from "./conditional_fields_conlroller";
+application.register("conditional-fields", ConditionalFieldsController)
