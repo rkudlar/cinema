@@ -1,0 +1,34 @@
+<div class="modal fade" id="<%= "#{id}Modal" %>" tabindex="-1"
+     aria-labelledby="<%= "#{id}ModalLabel" %>" aria-hidden="true">
+  <div class="modal-dialog" style="min-width: 35%;">
+    <div class="modal-content" data-controller="seats">
+      <div class="modal-header">
+        <h3 class="modal-title fs-5"><%= title %></h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <%= simple_form_for session, url: session.new_record? ? admin_sessions_path : admin_session_path(session.id) do |f| %>
+        <div class="modal-body">
+          <%= f.association :movie %>
+          <div class="row">
+            <div class="col"><%= f.association :hall %></div>
+            <div class="col-5"><%= f.input :price, as: :string %></div>
+          </div>
+          <%= f.input :start_datetime, as: :datetime, start_year: Date.today.year %>
+
+          <% if session.new_record? %>
+            <div data-controller="conditional-fields">
+              <label class="mb-2">
+                <%= check_box_tag :repeat, '1', false, data: { action: 'click->conditional-fields#switchDisplayNone' } %>
+                Repeat to
+              </label>
+              <%= f.input :repeat_to, as: :date, label: false, input_html: { class: 'd-none', data: { conditional_fields_target: 'input' } } %>
+            </div>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <%= f.button :submit, class: 'btn-dark' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

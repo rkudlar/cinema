@@ -23,6 +23,9 @@
           </li>
         <% end %>
         <li class="nav-item">
+          <%= link_to 'Sessions', admin_sessions_path, class: "nav-link #{'active' if content_for(:active_tab) == 'sessions'}" %>
+        </li>
+        <li class="nav-item">
           <%= link_to 'Halls', admin_halls_path, class: "nav-link #{'active' if content_for(:active_tab) == 'halls'}" %>
         </li>
         <% if current_user.superadmin? %>
