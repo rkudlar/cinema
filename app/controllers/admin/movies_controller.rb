@@ -15,7 +15,7 @@ module Admin
         flash[:success] = 'The movie has been added to our collection.'
         redirect_to admin_movies_path
       else
-        flash[:danger] = 'Something went wrong.'
+        flash.now[:danger] = 'Something went wrong.'
         render :new
       end
     end
@@ -24,11 +24,11 @@ module Admin
       @movie = TmdbConstructionService.call(external_id: params[:external_id])
       if @movie.save
         @movie = Movie.new
-        flash[:success] = 'The movie has been copied to our collection.'
+        flash.now[:success] = 'The movie has been copied to our collection.'
         render :new, status: :created
       else
         cookies[:active_movie_tab] = 'Add Manually'
-        flash[:danger] = 'All required fields must be filled'
+        flash.now[:danger] = 'All required fields must be filled'
         render :new, status: :unprocessable_entity
       end
     end
@@ -38,7 +38,7 @@ module Admin
         flash[:success] = 'The movie has been updated.'
         redirect_to admin_movies_path
       else
-        flash[:danger] = 'Something went wrong.'
+        flash.now[:danger] = 'Something went wrong.'
         render :new
       end
     end
@@ -48,10 +48,10 @@ module Admin
     end
 
     def destroy
-      if @movie.destroy!
+      if @movie.destroy
         flash[:success] = 'Movie successfully deleted'
       else
-        flash[:danger] = 'Something went wrong.'
+        flash[:danger] = @movie.errors.full_messages.join('. ')
       end
       redirect_to request.referer || admin_movies_path
     end

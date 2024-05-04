@@ -1,6 +1,7 @@
 class Admin::SessionsController < Admin::BaseController
   before_action -> { authorize(:session) }
   before_action :load_sessions
+  before_action :load_session, only: %i[destroy update tickets]
 
   def index;end
 
@@ -18,14 +19,56 @@ class Admin::SessionsController < Admin::BaseController
     render :index, status: :see_other
   end
 
+  def update
+    if @session.update(session_params)
+      flash.now[:success] = 'Session successfully updated.'
+    else
+      flash.now[:danger] = @session.errors.full_messages.join('. ')
+    end
+    @session = Session.new
+    render :index, status: :see_other
+  end
+
   def destroy
-    session = Session.find(params[:id])
-    if session.destroy
+    if @session.destroy
       flash.now[:success] = 'Session successfully deleted.'
     else
-      flash.now[:danger] = 'The session cannot be deleted.'
+      flash.now[:danger] = @session.errors.full_messages.join('. ')
     end
+    @session = Session.new
     render :index, status: :see_other
+  end
+
+  def tickets
+    @session = Session.find(params[:id])
+  end
+
+  def book
+    @session = Session.find(params[:id])
+    if params[:scheme].present? && params[:tickets].present?
+      ActiveRecord::Base.transaction do
+        params[:scheme].each do |row, columns|
+          columns.each do |column|
+            @session.seats_data[row][column]['booked'] = true
+          end
+        end
+
+        params[:tickets].each do |row, seats|
+          seats.each do |seat|
+            Ticket.create!(row: row, seat: seat, session_id: params[:id])
+          end
+        end
+
+        @session.save!
+        flash.now[:success] = 'Tickets successfully booked'
+      rescue => e
+        flash.now[:danger] = e.message
+      end
+    else
+      flash.now[:danger] = 'Select at least one seat first'
+    end
+
+    render :tickets
   end
 
   private
@@ -35,8 +78,12 @@ class Admin::SessionsController < Admin::BaseController
   end
 
   def load_sessions
-    @sessions = Session.where("start_datetime > ?", Time.now).order(:start_datetime, :hall_id)
+    @sessions = Session.available.order(:start_datetime, :hall_id)
     @session = Session.new
+  end
+
+  def load_session
+    @session = Session.find(params[:id])
   end
 
   def create_repeated_sessions(session)

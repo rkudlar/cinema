@@ -9,10 +9,11 @@ class User < ApplicationRecord
     manage_sessions
     ticket_sales
   ]
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
+  has_many :tickets
 
   enum role: %i[user admin superadmin]
 end

@@ -10,9 +10,9 @@ module Admin
         user.update(role: :user, permissions: [])
       else
         user.update(user_params)
-        flash[:success] = params[:commit] == t('admin.users.actions.update') ?
-                            "Permissions for #{user.email} updated!" :
-                            "#{user.email} has been added to the team!"
+        flash.now[:success] = params[:commit] == t('admin.users.actions.update') ?
+                                "Permissions for #{user.email} updated!" :
+                                "#{user.email} has been added to the team!"
       end
       render :index, status: :see_other
     end
@@ -21,12 +21,12 @@ module Admin
       if user.present?
         if user.user?
           user.update(user_params)
-          flash[:success] = "#{params[:user][:email]} has been added to the team!"
+          flash.now[:success] = "#{params[:user][:email]} has been added to the team!"
         else
-          flash[:danger] = "User with this email already admin!"
+          flash.now[:danger] = "User with this email already admin!"
         end
       else
-        flash[:danger] = "User with this email does not exist"
+        flash.now[:danger] = "User with this email does not exist"
       end
       render :index, status: :see_other
     end

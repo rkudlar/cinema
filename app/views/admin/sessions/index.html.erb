@@ -17,6 +17,7 @@
   <tr>
     <th scope="col">Movie</th>
     <th scope="col">Hall</th>
+    <th scope="col">Tickets</th>
     <th scope="col">Price</th>
     <th scope="col">Start time</th>
     <% if policy(:session).update? || policy(:session).destroy? %>
@@ -29,11 +30,12 @@
     <tr>
       <td><%= session.movie.title %></td>
       <td><%= session.hall.name %></td>
+      <td><%= link_to 'Tickets', tickets_admin_session_path(session) %></td>
       <td><%= session.price %></td>
       <td><%= session.start_datetime.strftime("%d.%m.%Y %H:%M") %></td>
       <td>
         <%= link_to 'Edit', '#', data: { bs_toggle: 'modal', bs_target: "#editSession_#{session.id}Modal" } if policy(:session).update? %>
-        <%= link_to 'Destroy', admin_session_path(session), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } if policy(:session).destroy? %>
+        <%= link_to 'Cancel', admin_session_path(session), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } if policy(:session).destroy? %>
       </td>
     </tr>
   <% end %>

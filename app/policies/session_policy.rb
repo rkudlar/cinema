@@ -14,4 +14,12 @@ class SessionPolicy < ApplicationPolicy
   def destroy?
     permission_manage_sessions?
   end
+
+  def tickets?
+    permission_ticket_sales?
+  end
+
+  def book?
+    permission_ticket_sales?
+  end
 end

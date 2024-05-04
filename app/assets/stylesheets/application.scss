@@ -38,7 +38,27 @@
   background-color: transparent;
 }
 
-.seat:not(.occupied):hover {
+.ticket.seat.space {
+  &:hover {
+    cursor: default;
+  }
+  border: 0;
+  background-color: transparent;
+}
+
+.ticket.seat {
+  background-color: #868686;
+}
+
+.ticket.seat.selected {
+  background-color: #31b2e2;
+}
+
+.ticket.seat.booked {
+  background-color: #fc9c39;
+}
+
+.seat:not(.booked):hover {
   cursor: pointer;
   transform: scale(1.2);
 }
