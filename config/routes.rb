@@ -23,6 +23,9 @@ Rails.application.routes.draw do
       post :build_chart, on: :collection
     end
 
-    resources :sessions, except: %i[show new]
+    resources :sessions, only: %i[index create destroy update] do
+      get :tickets, on: :member
+      post :book, on: :member
+    end
   end
 end

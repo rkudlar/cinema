@@ -4,11 +4,19 @@ class Session < ApplicationRecord
   belongs_to :movie
   belongs_to :hall
 
+  has_many :tickets
+
+  scope :available, -> { where("start_datetime > ?", Time.now) }
+
   before_create :build_seats_data
+  before_destroy :have_tickets, prepend: true do
+    throw(:abort) if errors.present?
+  end
 
   validates :start_datetime, presence: true
   validate :start_datetime_is_future
-  validate :hall_available_during_time
+  validate :hall_available_during_time, on: :create
+  validate :have_tickets, on: :update, if: -> { changed.excluding('seats_data').any? }
 
   private
 
@@ -16,8 +24,14 @@ class Session < ApplicationRecord
     data = {}
     hall.scheme['seats'].values.each.with_index(1) do |seats, row_index|
       data["row_#{row_index}".to_sym] = {}
+      number = 1
       seats.each.with_index(1) do |seat, index|
-        data["row_#{row_index}".to_sym]["seat_#{index}".to_sym] = seat ? { booked: false, space: false } : { booked: nil, space: true }
+        if seat
+          data["row_#{row_index}".to_sym]["column_#{index}".to_sym] = { booked: false, number: number, space: false }
+          number += 1
+        else
+          data["row_#{row_index}".to_sym]["column_#{index}".to_sym] = { booked: nil, number: nil, space: true }
+        end
       end
     end
 
@@ -32,5 +46,9 @@ class Session < ApplicationRecord
     conflicting_sessions = Session.where(hall_id: hall_id)
                                   .select { |x| start_datetime.between?(x.start_datetime - movie.duration.minutes, x.start_datetime + x.movie.duration.minutes) }
     errors.add(:base, 'The hall is not available during this time') if conflicting_sessions.present?
+  end
+
+  def have_tickets
+    errors.add(:base, 'The session cannot be updated/canceled after booking the tickets') if tickets.any?
   end
 end

@@ -11,22 +11,22 @@ module Admin
     def create
       @hall = Hall.new(hall_params)
       if @hall.save
-        flash[:success] = 'The hall has been created.'
+        flash.now[:success] = 'The hall has been created.'
         @hall = Hall.new
         render :index, status: :created
       else
-        flash[:danger] = 'Something went wrong.'
+        flash.now[:danger] = @hall.errors.full_messages.join('. ')
         render :index, status: :unprocessable_entity
       end
     end
 
     def update
       if @hall.update(hall_params)
-        flash[:success] = "The #{@hall.name} hall has been updated."
+        flash.now[:success] = "The #{@hall.name} hall has been updated."
         @hall = Hall.new
         render :index, status: :see_other
       else
-        flash[:danger] = 'Something went wrong.'
+        flash.now[:danger] = @hall.errors.full_messages.join('. ')
         @hall = Hall.new
         render :index, status: :unprocessable_entity
       end
@@ -38,9 +38,9 @@ module Admin
 
     def destroy
       if @hall.destroy
-        flash[:success] = 'Hall successfully deleted.'
+        flash.now[:success] = 'Hall successfully deleted.'
       else
-        flash[:danger] = 'The hall cannot be deleted. It probably has active sessions.'
+        flash.now[:danger] = @hall.errors.full_messages.join('. ')
       end
       @hall = Hall.new
       render :index, status: :see_other
