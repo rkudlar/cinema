@@ -1,0 +1,60 @@
+<div class="row h-100" id="seats-chart">
+  <div class="col-8 h-100 d-flex" style="flex-direction: column;">
+    <p class="d-flex justify-content-center fs-4"><%= @session.hall.name %> hall</p>
+    <div class="d-flex justify-content-center mb-3" style="">
+      <div class="border border-1 rounded-2">
+        <ul class="d-flex showcase m-0 p-1">
+          <li class="me-3">
+            <div class="ticket seat"></div><span class="text-dark">Available</span>
+          </li>
+          <li  class="me-3">
+            <div class="ticket seat selected"></div><span class="text-dark">Selected</span>
+          </li>
+          <li>
+            <div class="ticket seat booked"></div><span class="text-dark">Occupied</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center scroll-menu" style="flex-grow: 1">
+      <div style="max-width: 100%">
+        <% @session.seats_data.each.with_index(1) do |(row, seats), row_index| %>
+          <ul class="d-flex showcase m-0 p-0">
+            <% seats.each do |seat, options| %>
+              <li>
+                <% if options['space'] %>
+                  <div class="ticket seat space"></div>
+                <% elsif options['booked'] %>
+                  <div class="ticket seat booked"></div>
+                <% else %>
+                  <div class="ticket seat"
+                       data-row="<%= row %>"
+                       data-column="<%= seat %>"
+                       data-row-number="<%= row_index %>"
+                       data-seat-number="<%= options['number'] %>"
+                       data-price="<%= @session.price %>"
+                       data-action="click->seats#selectSeat">
+                  </div>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-4 h-100 d-flex" style="flex-direction: column;">
+    <div class="row d-none" id="no-selected-hide">
+      <div class="col-6">
+        <p class="fs-4">Selected:</p>
+      </div>
+      <div class="col-6 text-end">
+        <%#= button_to 'Buy', payments_path, class: 'btn btn-dark', data: { turbo: false } %>
+        <button type="button" class="btn btn-dark" data-action="click->seats#<%= admin ? "adminBookSeat" : "bookTickets" %>" data-session-id="<%= @session.id %>">
+          Book ticket
+        </button>
+      </div>
+    </div>
+    <div id="selected-tickets" class="scroll-menu-vertical" style="flex-grow: 1"></div>
+  </div>
+</div>

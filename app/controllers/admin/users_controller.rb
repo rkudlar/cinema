@@ -8,12 +8,13 @@ module Admin
     def update
       if params[:commit] == t('admin.users.actions.downgrade')
         user.update(role: :user, permissions: [])
+        flash.now[:success] = "#{user.email} has been downgraded to user!"
       else
-        user.update(user_params)
-        flash.now[:success] = params[:commit] == t('admin.users.actions.update') ?
-                                "Permissions for #{user.email} updated!" :
-                                "#{user.email} has been added to the team!"
+        user.update(params[:user].present? ? user_params : { permissions: [] })
+          params[:commit] == t('admin.users.actions.update') ? "Permissions for #{user.email} updated!" :
+                                                               "#{user.email} has been added to the team!"
       end
+      @user = User.new
       render :index, status: :see_other
     end
 
@@ -25,6 +26,7 @@ module Admin
         else
           flash.now[:danger] = "User with this email already admin!"
         end
+        @user = User.new
       else
         flash.now[:danger] = "User with this email does not exist"
       end
