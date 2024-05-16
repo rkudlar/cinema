@@ -72,7 +72,7 @@ export default class extends Controller {
 
       const priceCol = document.createElement('div');
       priceCol.className = 'col-4 border-start';
-      priceCol.textContent = `Price: ${e.target.dataset.price}`
+      priceCol.textContent = `${e.target.dataset.price} $`
 
       cardBody.appendChild(placeCol)
       cardBody.appendChild(priceCol)
@@ -81,9 +81,51 @@ export default class extends Controller {
     } else {
       selectedTickets.removeChild(document.getElementById(cardId));
     }
+
+    if (selectedTickets.childElementCount === 0) {
+      document.getElementById('no-selected-hide').classList.add("d-none");
+    } else {
+      document.getElementById('no-selected-hide').classList.remove("d-none");
+    }
   }
 
-  bookSeat(e) {
+  adminBookSeat(e) {
+    fetch(`/admin/sessions/${e.target.dataset.sessionId}/book`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute("content")
+      },
+      body: JSON.stringify(this.buildTicketsData())
+    }).then((response) => response.text()).then((html) => {
+      document.documentElement.innerHTML = html;
+    })
+  }
+
+  bookTickets(e) {
+    fetch(`/movie_sessions/${e.target.dataset.sessionId}/payment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute("content")
+      },
+      body: JSON.stringify(this.buildTicketsData())
+    }).then(response => response.json())
+      .then(data => {
+        if (data.redirect_to) {
+          window.location.href = data.redirect_to;
+        }
+      })
+  }
+
+  swapSession(e) {
+    fetch(`/movie_sessions/${e.target.dataset.sessionId}/swap`, {})
+      .then((response) => response.text()).then((html) => {
+        Turbo.renderStreamMessage(html);
+      })
+  }
+
+  buildTicketsData() {
     const tickets = document.getElementById('selected-tickets').childNodes
     const data = { scheme:{}, tickets:{} }
 
@@ -102,15 +144,6 @@ export default class extends Controller {
       data["tickets"][rowNumber].push(seatNumber)
     })
 
-    fetch(`/admin/sessions/${e.target.dataset.sessionId}/book`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute("content")
-      },
-      body: JSON.stringify(data)
-    }).then((response) => response.text()).then((html) => {
-      document.documentElement.innerHTML = html;
-    })
+    return data;
   }
 }

@@ -13,10 +13,20 @@ class Session < ApplicationRecord
     throw(:abort) if errors.present?
   end
 
-  validates :start_datetime, presence: true
+  validates :start_datetime, :price, presence: true
   validate :start_datetime_is_future
   validate :hall_available_during_time, on: :create
   validate :have_tickets, on: :update, if: -> { changed.excluding('seats_data').any? }
+
+  def tickets_available?(scheme)
+    scheme.each do |row, columns|
+      columns.each do |column|
+        return false if seats_data[row][column]['booked'] == true
+      end
+    end
+
+    true
+  end
 
   private
 
@@ -43,7 +53,7 @@ class Session < ApplicationRecord
   end
 
   def hall_available_during_time
-    conflicting_sessions = Session.where(hall_id: hall_id)
+    conflicting_sessions = Session.available.where(hall_id: hall_id)
                                   .select { |x| start_datetime.between?(x.start_datetime - movie.duration.minutes, x.start_datetime + x.movie.duration.minutes) }
     errors.add(:base, 'The hall is not available during this time') if conflicting_sessions.present?
   end

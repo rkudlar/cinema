@@ -4,3 +4,7 @@ tmdb:
   url: https://api.themoviedb.org
   img_url: https://image.tmdb.org
   img_path: /t/p/w440_and_h660_face
+stripe:
+  publishable_key: <%= ENV["STRIPE_PUBLISHABLE_KEY"] %>
+  secret_key: <%= ENV["STRIPE_SECRET_KEY"] %>
+  signing_secret: <%= ENV["STRIPE_SIGNING_SECRET"] %>

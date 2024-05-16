@@ -1,0 +1,23 @@
+<div class="row">
+  <% @movies.each do |movie| %>
+    <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+      <div class="card shadow-sm">
+        <%= link_to movie_session_path(movie.id), class: 'link-underline link-underline-opacity-0' do %>
+          <% if movie.poster.attached? %>
+            <%= image_tag(url_for(movie.poster), class: 'card-img-top') %>
+          <% else %>
+            <div class="no-image card-img-top">
+              <span>No image</span>
+            </div>
+          <% end %>
+        <% end %>
+        <div class="card-footer border-0">
+          <h5 class="card-title text-clamp text-clamp-1"><%= link_to movie.title, movie_session_path(movie.id) %></h5>
+          <div class="text-clamp text-clamp-1">
+            <%= movie.format_duration %> | <%= movie.genre.join(', ') %>
+          </div>
+        </div>
+      </div>
+    </div>
+<% end %>
+</div>

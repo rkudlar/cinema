@@ -17,6 +17,7 @@ gem 'redis', '>= 4.0.1'
 gem 'simple_form', '~> 5.3'
 gem 'sprockets-rails'
 gem 'stimulus-rails'
+gem 'stripe'
 gem 'turbo-rails'
 gem 'tzinfo-data', platforms: %i[windows jruby]
 

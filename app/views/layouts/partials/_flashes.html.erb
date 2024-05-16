@@ -1,5 +1,5 @@
 <div id="flashes">
-  <% flash.each do |key, value| %>
+  <% flash.select { |k, v| k.to_s.in?(%w(success danger)) && v.present? }.each do |key, value| %>
     <div class="alert alert-<%= key %>" role="alert">
       <%= value %>
     </div>

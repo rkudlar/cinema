@@ -1,0 +1,24 @@
+<div class="d-flex justify-content-center">
+  <div class="w-50">
+    <% if @tickets.present? %>
+      <% @tickets.each do |ticket| %>
+        <div class="card mb-2">
+          <div class="card-body row">
+            <div class="col">
+              <strong><%= ticket.session.movie.title %></strong>
+              <br>
+              Hall: <%= ticket.session.hall.name %> | Row: <%= ticket.row %>, Seat: <%= ticket.seat %>
+            </div>
+            <div class="col-4 col-md-3 border-start d-flex justify-content-center align-items-center">
+              <%= ticket.session.start_datetime.strftime("%d.%m.%Y %H:%M") %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="fs-3 text-center">
+      You have no tickets for <%= link_to 'future sessions', movie_sessions_path %>.<br>Once purchased, they will appear here
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -8,9 +8,11 @@
       </div>
       <%= simple_form_for session, url: session.new_record? ? admin_sessions_path : admin_session_path(session.id) do |f| %>
         <div class="modal-body">
-          <%= f.association :movie %>
+          <%= f.input :movie_id, label: "Movie", collection: @movies.all.map { |m| [m.title, m.id] } %>
           <div class="row">
-            <div class="col"><%= f.association :hall %></div>
+            <div class="col">
+              <%= f.input :hall_id, label: "Hall", collection: @halls.all.map { |h| [h.name, h.id] } %>
+            </div>
             <div class="col-5"><%= f.input :price, as: :string %></div>
           </div>
           <%= f.input :start_datetime, as: :datetime, start_year: Date.today.year %>

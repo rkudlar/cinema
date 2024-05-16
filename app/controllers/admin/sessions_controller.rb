@@ -1,6 +1,8 @@
 class Admin::SessionsController < Admin::BaseController
+  include BookingMethods
+
   before_action -> { authorize(:session) }
-  before_action :load_sessions
+  before_action :prepare_values, except: %i[tickets book]
   before_action :load_session, only: %i[destroy update tickets]
 
   def index;end
@@ -46,20 +48,18 @@ class Admin::SessionsController < Admin::BaseController
   def book
     @session = Session.find(params[:id])
     if params[:scheme].present? && params[:tickets].present?
+      unless @session.tickets_available?(params[:scheme])
+        flash.now[:danger] = 'Tickets not available'
+        render :tickets
+        return
+      end
+
       ActiveRecord::Base.transaction do
-        params[:scheme].each do |row, columns|
-          columns.each do |column|
-            @session.seats_data[row][column]['booked'] = true
-          end
-        end
+        expire_payment_session(params[:scheme], params[:id])
 
-        params[:tickets].each do |row, seats|
-          seats.each do |seat|
-            Ticket.create!(row: row, seat: seat, session_id: params[:id])
-          end
-        end
+        update_session(@session, params[:scheme])
+        book_tickets(params[:tickets], params[:id])
 
-        @session.save!
         flash.now[:success] = 'Tickets successfully booked'
       rescue => e
         flash.now[:danger] = e.message
@@ -77,9 +77,11 @@ class Admin::SessionsController < Admin::BaseController
     params.require(:session).permit(:movie_id, :hall_id, :price, :start_datetime)
   end
 
-  def load_sessions
-    @sessions = Session.available.order(:start_datetime, :hall_id)
+  def prepare_values
+    @sessions = Session.available.includes(:movie, :hall).order(:start_datetime, :hall_id)
     @session = Session.new
+    @halls = Hall.all
+    @movies = Movie.all
   end
 
   def load_session

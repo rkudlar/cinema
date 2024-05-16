@@ -17,6 +17,10 @@ class Movie < ApplicationRecord
   before_save :remove_empty_value
   before_save :attach_poster, if: -> { poster_path }
 
+  def format_duration
+    "#{duration / 60}h #{duration % 60}min"
+  end
+
   private
 
   def remove_empty_value

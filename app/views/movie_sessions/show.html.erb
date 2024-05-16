@@ -1,0 +1,39 @@
+<h2><%= @movie.title %></h2>
+<div class="row">
+  <div class="col-3">
+    <% if @movie.poster.attached? %>
+      <%= image_tag(url_for(@movie.poster), class: 'w-100 mb-2') %>
+    <% else %>
+      <div class="no-image w-100 mb-2">
+        <span>No image</span>
+      </div>
+    <% end %>
+    <p class="m-0"><strong>Release date:</strong> <%= @movie.release_date.strftime("%b %d, %Y") %></p>
+    <p class="m-0"><strong>Duration:</strong> <%= @movie.format_duration %></p>
+    <p class="m-0"><strong>Genre:</strong> <%= @movie.genre.join(', ') %></p>
+    <p class="m-0"><strong>Countries:</strong> <%= @movie.countries.join(', ') %></p>
+  </div>
+  <div class="col-9" data-controller="seats">
+    <div class="row" style="height: 50vh">
+      <div class="col-2 scroll-menu-vertical">
+        <% @sessions_by_date.each do |date, sessions| %>
+          <div class="mb-2">
+            <p class="mb-1"><strong><%= date.strftime('%-d %B, %A') %></strong></p>
+            <% sessions.each do |session| %>
+              <input type="radio" class="btn-check" name="options-outlined" id="<%= "session-#{session.id}" %>" autocomplete="off" data-session-id="<%= session.id %>" data-action="click->seats#swapSession" <%= 'checked' if @session == session %>>
+              <label class="btn btn-outline-dark mb-1" for="<%= "session-#{session.id}" %>"><%= session.start_datetime.strftime('%H:%M') %></label>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      <div class="col-10 h-100">
+        <%= render 'seats_chart', admin: false %>
+      </div>
+    </div>
+    <div class="mt-3">
+      <p class="m-0"><strong>Description:</strong> <%= @movie.description %></p>
+      <p class="m-0"><strong>Directors:</strong> <%= @movie.directors.join(', ') %></p>
+      <p class="m-0"><strong>Actors:</strong> <%= @movie.actors.join(', ') %></p>
+    </div>
+  </div>
+</div>
