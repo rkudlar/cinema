@@ -14,7 +14,7 @@ class MovieSessionsController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace('seats-chart', partial: '/movie_sessions/seats_chart', locals: { admin: :false })
+        render turbo_stream: turbo_stream.replace('seats-chart', partial: '/movie_sessions/seats_chart', locals: { admin: false })
       end
     end
   end

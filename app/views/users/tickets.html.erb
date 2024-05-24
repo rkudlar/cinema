@@ -1,10 +1,10 @@
-<div class="d-flex justify-content-center">
-  <div class="w-50">
+<div class="d-flex justify-content-center row">
+  <div class="col-12 col-lg-6">
     <% if @tickets.present? %>
       <% @tickets.each do |ticket| %>
         <div class="card mb-2">
           <div class="card-body row">
-            <div class="col">
+            <div class="col-8">
               <strong><%= ticket.session.movie.title %></strong>
               <br>
               Hall: <%= ticket.session.hall.name %> | Row: <%= ticket.row %>, Seat: <%= ticket.seat %>

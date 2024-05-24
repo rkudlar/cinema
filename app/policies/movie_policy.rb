@@ -12,15 +12,15 @@ class MoviePolicy < ApplicationPolicy
   end
 
   def create?
-    permission_create_and_update_movie?
+    permission_manage_movies?
   end
 
   def create_with_tmdb?
-    permission_create_movie_with_tmdb?
+    permission_manage_movies?
   end
 
   def update?
-    permission_create_and_update_movie?
+    permission_manage_movies?
   end
 
   def search?
@@ -28,6 +28,6 @@ class MoviePolicy < ApplicationPolicy
   end
 
   def destroy?
-    permission_remove_movie?
+    permission_manage_movies?
   end
 end

@@ -5,18 +5,21 @@ module Admin
     before_action :load_tmdb_movies, only: %i[new create_with_tmdb]
     before_action :load_movie, only: %i[edit update destroy]
 
+    def index; end
+
     def new
       @movie = Movie.new
     end
 
     def create
-      movie = Movie.new(movie_params)
-      if movie.save
+      @movie = Movie.new(movie_params)
+      if @movie.save
         flash[:success] = 'The movie has been added to our collection.'
         redirect_to admin_movies_path
       else
-        flash.now[:danger] = 'Something went wrong.'
-        render :new
+        load_movies
+        load_tmdb_movies
+        render :new, status: :unprocessable_entity
       end
     end
 
@@ -39,7 +42,7 @@ module Admin
         redirect_to admin_movies_path
       else
         flash.now[:danger] = 'Something went wrong.'
-        render :new
+        render :edit
       end
     end
 

@@ -5,9 +5,7 @@
     <% elsif movie.is_a?(Movie) && movie.poster.present? %>
       <%= image_tag url_for(movie.poster), class: 'card-img-top' %>
     <% else %>
-      <div class="no-image card-img-top">
-        <span>No image</span>
-      </div>
+      <%= image_tag image_path('no-image.jpg'), class: 'card-img-top' %>
     <% end %>
     <div class="card-body fixed-card-body">
       <h5 class="card-title text-clamp text-clamp-1"><%= movie['title'] %></h5>
