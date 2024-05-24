@@ -1,5 +1,5 @@
 <div class="row h-100" id="seats-chart">
-  <div class="col-8 h-100 d-flex" style="flex-direction: column;">
+  <div class="col-12 col-lg-8 h-100 d-flex" style="flex-direction: column;">
     <p class="d-flex justify-content-center fs-4"><%= @session.hall.name %> hall</p>
     <div class="d-flex justify-content-center mb-3" style="">
       <div class="border border-1 rounded-2">
@@ -16,7 +16,7 @@
         </ul>
       </div>
     </div>
-    <div class="d-flex justify-content-center scroll-menu" style="flex-grow: 1">
+    <div class="d-flex justify-content-center scroll-menu mb-3 mb-lg-0" style="flex-grow: 1">
       <div style="max-width: 100%">
         <% @session.seats_data.each.with_index(1) do |(row, seats), row_index| %>
           <ul class="d-flex showcase m-0 p-0">
@@ -43,13 +43,12 @@
       </div>
     </div>
   </div>
-  <div class="col-4 h-100 d-flex" style="flex-direction: column;">
+  <div class="col-12 col-lg-4 d-flex" style="flex-direction: column;">
     <div class="row d-none" id="no-selected-hide">
       <div class="col-6">
         <p class="fs-4">Selected:</p>
       </div>
       <div class="col-6 text-end">
-        <%#= button_to 'Buy', payments_path, class: 'btn btn-dark', data: { turbo: false } %>
         <button type="button" class="btn btn-dark" data-action="click->seats#<%= admin ? "adminBookSeat" : "bookTickets" %>" data-session-id="<%= @session.id %>">
           Book ticket
         </button>

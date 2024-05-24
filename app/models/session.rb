@@ -53,8 +53,9 @@ class Session < ApplicationRecord
   end
 
   def hall_available_during_time
-    conflicting_sessions = Session.available.where(hall_id: hall_id)
-                                  .select { |x| start_datetime.between?(x.start_datetime - movie.duration.minutes, x.start_datetime + x.movie.duration.minutes) }
+    conflicting_sessions = Session.available.includes(:movie).where(hall_id: hall_id).select do |x|
+      start_datetime.between?(x.start_datetime - movie.duration.minutes, x.start_datetime + x.movie.duration.minutes)
+    end
     errors.add(:base, 'The hall is not available during this time') if conflicting_sessions.present?
   end
 

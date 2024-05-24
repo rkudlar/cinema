@@ -4,11 +4,11 @@ class HallPolicy < ApplicationPolicy
   end
 
   def create?
-    permission_create_hall?
+    permission_manage_halls?
   end
 
   def update?
-    permission_update_hall?
+    permission_manage_halls?
   end
 
   def build_chart?
@@ -16,6 +16,6 @@ class HallPolicy < ApplicationPolicy
   end
 
   def destroy?
-    permission_destroy_hall?
+    permission_manage_halls?
   end
 end

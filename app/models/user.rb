@@ -1,11 +1,7 @@
 class User < ApplicationRecord
   PERMISSION_LEVELS = %w[
-    create_movie_with_tmdb
-    create_and_update_movie
-    remove_movie
-    create_hall
-    update_hall
-    destroy_hall
+    manage_movies
+    manage_halls
     manage_sessions
     ticket_sales
   ]
