@@ -62,7 +62,7 @@ module Admin
     private
 
     def movie_params
-      params.require(:movie).permit(:title, :description, :duration, :release_date, countries: [], directors: [], actors: [], genre: [])
+      params.require(:movie).permit(:title, :description, :duration, :release_date, :poster, countries: [], directors: [], actors: [], genre: [])
     end
 
     def load_movies

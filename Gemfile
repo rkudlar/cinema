@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 ruby '3.2.2'
 
 gem 'active_storage_validations', '~> 1.1', '>= 1.1.4'
+gem "aws-sdk-s3", require: false
 gem 'bootsnap', require: false
 gem 'cssbundling-rails'
 gem 'config', '~> 5.1'

@@ -10,7 +10,9 @@
           <% end %>
         <% end %>
         <div class="card-footer border-0">
-          <h5 class="card-title text-clamp text-clamp-1"><%= link_to movie.title, movie_session_path(movie.id) %></h5>
+          <h5 class="card-title text-clamp text-clamp-1">
+            <%= link_to movie.title, movie_session_path(movie.id), class: 'link-dark link-underline-opacity-50 link-underline-opacity-100-hover' %>
+          </h5>
           <div class="text-clamp text-clamp-1">
             <%= movie.format_duration %> | <%= movie.genre.join(', ') %>
           </div>

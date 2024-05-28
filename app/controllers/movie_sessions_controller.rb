@@ -5,8 +5,13 @@ class MovieSessionsController < ApplicationController
 
   def show
     @movie = Movie.find(params[:id])
+    if @movie.sessions.available.any?
     @sessions_by_date = @movie.sessions.available.order(:start_datetime).group_by { |session| session.start_datetime.to_date }
     @session = @sessions_by_date.values.first.first
+    else
+      flash[:danger] = 'The movie has no sessions available'
+      redirect_to movie_sessions_path
+    end
   end
 
   def swap

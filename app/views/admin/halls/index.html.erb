@@ -1,9 +1,9 @@
 <% content_for(:active_tab) { 'halls' } %>
 
 <div class="row">
-  <div class="col"><h2 class="fs-3">Halls</h2></div>
+  <div class="col-6"><h2 class="fs-3">Halls</h2></div>
   <% if policy(:hall).create? %>
-    <div class="col-2">
+    <div class="col-6 d-flex flex-row-reverse">
       <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="<%= "#newHallModal" %>">
         <%= t('admin.halls.actions.create') %>
       </button>
